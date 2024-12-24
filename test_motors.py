@@ -17,16 +17,11 @@ def int_in_range(int_value, min_value, max_value):
     return int_value
 
 parser = argparse.ArgumentParser(description='Select a test.')
-# parser.add_argument('--test_n', type=lambda x: int_in_range(x, 1, 2), required=True, help='1. Forward\n2. Spin')
 parser.add_argument('--mcls', type=lambda x: int_in_range(x, MIN_SPEED, MAX_SPEED), required=True, help='Speed for left motor.')
 parser.add_argument('--mcrs', type=lambda x: int_in_range(x, MIN_SPEED, MAX_SPEED), required=True, help='Speed for right motor.')
 parser.add_argument('--test_time', type=lambda x: int_in_range(x, 1, 60), required=True, help='Duration to run the motors in seconds (1-60).')
 
 args = parser.parse_args()
-
-
-# TEST_SPEED = 150
-# TEST_TIME = 2
 
 
 mh = Raspi_MotorHAT(addr=I2C_ADDR)
