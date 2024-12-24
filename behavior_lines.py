@@ -21,6 +21,7 @@ args = parser.parse_args()
 
 r = robot.Robot()
 
-r.convert_speed(args.left_speed, args.right_speed)
+r.set_left(args.left_speed)
+r.set_right(args.right_speed)
 
 sleep(args.test_time)
