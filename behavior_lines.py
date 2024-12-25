@@ -12,16 +12,22 @@ def int_in_range(int_value, min_value, max_value):
         raise argparse.ArgumentTypeError(f"Value {int_value} is out of range [{min_value}, {max_value}]")
     return int_value
 
+def float_in_range(float_value, min_value, max_value):
+    float_value = float(float_value)
+    if float_value < min_value or float_value > max_value:
+        raise argparse.ArgumentTypeError(f"Value {float_value} is out of range [{min_value}, {max_value}]")
+    return float_value
+
 parser = argparse.ArgumentParser(description='Select a test.')
-parser.add_argument('--left_speed', type=lambda x: int_in_range(x, MIN_SPEED, MAX_SPEED), required=True, help='Speed for left motor as a percentage.')
-parser.add_argument('--right_speed', type=lambda x: int_in_range(x, MIN_SPEED, MAX_SPEED), required=True, help='Speed for right motor as a percentage.')
-parser.add_argument('--test_time', type=lambda x: int_in_range(x, 1, 60), required=True, help='Duration to run the motors in seconds (1-60).')
+parser.add_argument('--ls', type=lambda x: int_in_range(x, MIN_SPEED, MAX_SPEED), required=True, help='Speed for left motor as a percentage.')
+parser.add_argument('--rs', type=lambda x: int_in_range(x, MIN_SPEED, MAX_SPEED), required=True, help='Speed for right motor as a percentage.')
+parser.add_argument('--tt', type=lambda x: float_in_range(x, 1.0, 60.0), required=True, help='Duration to run the motors in seconds (1.0-60.0).')
 
 args = parser.parse_args()
 
 r = robot.Robot()
 
-r.set_left(args.left_speed)
-r.set_right(args.right_speed)
+r.set_left(args.ls)
+r.set_right(args.rs)
 
-sleep(args.test_time)
+sleep(args.tt)
