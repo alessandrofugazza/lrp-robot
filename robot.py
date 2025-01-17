@@ -1,5 +1,12 @@
+import os
+import time
 from Raspi_MotorHAT import Raspi_MotorHAT
+from gpiozero import DistanceSensor
 import atexit
+
+if os.system("pgrep pigpiod > /dev/null") != 0:
+    os.system("sudo pigpiod")
+    time.sleep(1) # todo check this timer
 
 
 I2C_ADDR = 0x60
@@ -14,6 +21,11 @@ class Robot:
         self._mh = Raspi_MotorHAT(addr=motorhat_addr)
         self.left_motor = self._mh.getMotor(MOTOR_CHANNEL_L)
         self.right_motor = self._mh.getMotor(MOTOR_CHANNEL_R)
+        # Setup The Distance Sensors
+        # consider starting pigpiod on boot
+        pin_factory = PiGPIOFactory()
+        sensor_l = DistanceSensor(echo=17, trigger=27, pin_factory=pin_factory)
+        sensor_r = DistanceSensor(echo=5, trigger=6, pin_factory=pin_factory)
         atexit.register(self.stop_motors)
 
     def convert_speed(self, speed):
