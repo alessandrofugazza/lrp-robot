@@ -29,8 +29,8 @@ class Robot:
         # Setup The Distance Sensors
         # consider starting pigpiod on boot
         pin_factory = PiGPIOFactory()
-        self.sensor_l = DistanceSensor(echo=LEFT_SENSOR_ECHO, trigger=LEFT_SENSOR_TRIGGER, pin_factory=pin_factory)
-        self.sensor_r = DistanceSensor(echo=RIGHT_SENSOR_ECHO, trigger=RIGHT_SENSOR_TRIGGER, pin_factory=pin_factory)
+        self.left_distance_sensor = DistanceSensor(echo=LEFT_SENSOR_ECHO, trigger=LEFT_SENSOR_TRIGGER, pin_factory=pin_factory)
+        self.right_distance_sensor = DistanceSensor(echo=RIGHT_SENSOR_ECHO, trigger=RIGHT_SENSOR_TRIGGER, pin_factory=pin_factory)
         atexit.register(self.stop_motors)
 
     def convert_speed(self, speed):
