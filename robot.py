@@ -3,12 +3,17 @@ import time
 from Raspi_MotorHAT import Raspi_MotorHAT
 from gpiozero import DistanceSensor
 from gpiozero.pins.pigpio import PiGPIOFactory
+import leds_led_shim
 
 import atexit
 
-if os.system("pgrep pigpiod > /dev/null") != 0:
-    os.system("sudo pigpiod")
-    time.sleep(1) # todo check this timer
+# if os.system("pgrep pigpiod > /dev/null") != 0:
+#     os.system("sudo pigpiod")
+#     time.sleep(1) # todo check this timer
+
+# if os.system("pgrep -f leds_led_shim.py > /dev/null") != 0:
+#     os.system("python3 home/shell/leds_led_shim.py boot_light_show &")
+#     time.sleep(1)
 
 
 I2C_ADDR = 0x60
@@ -31,7 +36,13 @@ class Robot:
         pin_factory = PiGPIOFactory()
         self.left_distance_sensor = DistanceSensor(echo=LEFT_SENSOR_ECHO, trigger=LEFT_SENSOR_TRIGGER, pin_factory=pin_factory)
         self.right_distance_sensor = DistanceSensor(echo=RIGHT_SENSOR_ECHO, trigger=RIGHT_SENSOR_TRIGGER, pin_factory=pin_factory)
-        atexit.register(self.stop_motors)
+        self.leds = leds_led_shim.Leds()
+        atexit.register(self.stop_all)
+
+    def stop_all(self): 
+        self.stop_motors() 
+        self.leds.clear() 
+        self.leds.show()
 
     def convert_speed(self, speed):
         mode = Raspi_MotorHAT.RELEASE
@@ -70,3 +81,5 @@ class Robot:
                 rd = str(rd) + " mm"
             print(f'LEFT {ld}\tRIGHT {rd}')
             time.sleep(frequency)
+
+    
