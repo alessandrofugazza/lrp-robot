@@ -9,6 +9,7 @@ class ObstacleAvoidingBehavior:
     def __init__(self, the_robot):
         self.robot = the_robot
         self.speed = SPEED
+        # self.led_half = int(self.robot.leds.leds_count/2)
 
     # def get_motor_speed(self, distance):
     #     """This method chooses a speed for a motor based on the distance from a sensor"""

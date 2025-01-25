@@ -3,7 +3,7 @@ import time
 from Raspi_MotorHAT import Raspi_MotorHAT
 from gpiozero import DistanceSensor
 from gpiozero.pins.pigpio import PiGPIOFactory
-import leds_led_shim
+import code.debug.leds.leds_led_shim as leds_led_shim
 
 import atexit
 
