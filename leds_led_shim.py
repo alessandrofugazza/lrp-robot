@@ -22,15 +22,4 @@ class Leds:
     def show(self): 
         ledshim.show()
 
-    def boot_light_show(self):
-        while True:
-            for led_no in range(self.count):
-                ledshim.set_pixel(led_no, 0, 255, 0)
-                ledshim.show()
-                sleep(0.1)
-                ledshim.clear()
-
-if __name__ == "__main__":
-    if len(sys.argv) > 1 and sys.argv[1] == "boot_light_show":
-        leds = Leds()
-        leds.boot_light_show()
+    
