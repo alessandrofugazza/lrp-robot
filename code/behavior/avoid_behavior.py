@@ -9,7 +9,8 @@ class ObstacleAvoidingBehavior:
     def __init__(self, the_robot):
         self.robot = the_robot
         self.speed = SPEED
-        # self.led_half = int(self.robot.leds.leds_count/2)
+        self.led_half = int(self.robot.leds.leds_count/2)
+        self.sense_colour = 3, 169, 244
 
     # def get_motor_speed(self, distance):
     #     """This method chooses a speed for a motor based on the distance from a sensor"""
@@ -17,6 +18,20 @@ class ObstacleAvoidingBehavior:
     #         return -self.speed
     #     else:
     #         return self.speed
+
+    def distance_to_led_bar(self, distance):
+        inverted = max(0, 1000 - distance)
+        led_bar = int(round(inverted/1000 * self.led_half)) 
+        return led_bar
+
+    def display_state(self, left_distance, right_distance): 
+        self.robot.leds.clear()
+        led_bar = self.distance_to_led_bar(left_distance) 
+        self.robot.leds.set_range(range(led_bar), self.sense_colour)
+        led_bar = self.distance_to_led_bar(right_distance)
+        start = (self.robot.leds.count - 1) - led_bar
+        self.robot.leds.set_range(range(start, self.robot.leds.count - 1), self.sense_colour)
+        self.robot.leds.show()
 
     def get_speeds(self, nearest_distance):
         if nearest_distance >= 1000: 
@@ -42,7 +57,7 @@ class ObstacleAvoidingBehavior:
             delay = 250
         return nearest_speed, furthest_speed, delay
     
-    def display_state(self, left_distance, right_distance, nearest_speed, furthest_speed, delay):
+    def log_state(self, left_distance, right_distance, nearest_speed, furthest_speed, delay):
         if left_distance == 1000.0:
             p_left_distance = "INF"
         else:
@@ -61,9 +76,9 @@ class ObstacleAvoidingBehavior:
             # turn into mm
             left_distance = self.robot.left_distance_sensor.distance * 1000
             right_distance = self.robot.right_distance_sensor.distance * 1000
-
+            self.display_state(left_distance, right_distance)
             nearest_speed, furthest_speed, delay = self.get_speeds(min(left_distance, right_distance))
-            self.display_state(left_distance, right_distance, nearest_speed, furthest_speed, delay)
+            self.log_state(left_distance, right_distance, nearest_speed, furthest_speed, delay)
             
             if left_distance < right_distance:
                 self.robot.set_left(nearest_speed)
