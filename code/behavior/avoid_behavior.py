@@ -1,5 +1,6 @@
 from robot import Robot
 from time import sleep
+from math import floor
 
 SPEED = 80
 # AVOIDANCE_DISTANCE = 300
@@ -9,7 +10,7 @@ class ObstacleAvoidingBehavior:
     def __init__(self, the_robot):
         self.robot = the_robot
         self.speed = SPEED
-        self.led_half = int(self.robot.leds.leds_count/2)
+        self.led_half = int(self.robot.leds.count/2)
         self.sense_colour = 3, 169, 244
 
     # def get_motor_speed(self, distance):
@@ -21,7 +22,7 @@ class ObstacleAvoidingBehavior:
 
     def distance_to_led_bar(self, distance):
         inverted = max(0, 1000 - distance)
-        led_bar = int(round(inverted/1000 * self.led_half)) 
+        led_bar = floor(inverted / 1000 * self.led_half) + 1
         return led_bar
 
     def display_state(self, left_distance, right_distance): 
@@ -66,7 +67,7 @@ class ObstacleAvoidingBehavior:
             p_right_distance = "INF"
         else:
             p_right_distance = str(round(right_distance, 1)) + " mm"
-        print(f'DISTANCES:\t\tLEFT\t{p_left_distance}\tRGTH\t{p_right_distance}\nSPEEDS:\t\tNRST\t{nearest_speed}\tFRST\t{furthest_speed}\nDLAY:\t\t{delay}\n\n')
+        print(f'DISTANCES:\tLEFT\t{p_left_distance}\tRGTH\t{p_right_distance}\nSPEEDS:\t\tNRST\t{nearest_speed}\tFRST\t{furthest_speed}\nDLAY:\t\t{delay}\n\n')
         
     def run(self):
         # self.robot.set_pan(0)
