@@ -20,9 +20,20 @@ servo_mid_point_steps = servo_mid_point_ms * steps_per_ms
 def convert_degrees_to_steps(position): 
     return int(servo_mid_point_steps + (position * steps_per_degree))
 
-atexit.register(pwm.setPWM, 0, 0, 4096)
+servo_channels = [0, 2]
+
+def turn_off_servos():
+    for channel in servo_channels:
+        pwm.setPWM(channel, 0, 4096)
+
+atexit.register(turn_off_servos)
+
+
+# atexit.register(pwm.setPWM, 0, 0, 4096)
+
 
 while True: 
     position = int(input("Type your position in degrees (90 to -90, 0 is middle): "))
-    end_step = convert_degrees_to_steps(position)
-    pwm.setPWM(0, 0, end_step)
+    for channel in servo_channels:
+        end_step = convert_degrees_to_steps(position)
+        pwm.setPWM(channel, 0, end_step)
