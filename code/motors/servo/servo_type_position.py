@@ -3,12 +3,12 @@ import atexit
 
 pwm = PWM(0x40)
 
-pwm_frequency = 100 
+pwm_frequency = 50 
 pwm.setPWMFreq(pwm_frequency)
 
 servo_mid_point_ms = 1.5
 
-deflect_90_in_ms = 0.5
+deflect_90_in_ms = 1
 
 period_in_ms = 1000 / pwm_frequency
 pulse_steps = 4096
