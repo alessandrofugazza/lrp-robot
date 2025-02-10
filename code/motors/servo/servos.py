@@ -16,7 +16,7 @@ class Servos:
         self.steps_per_degree = (deflect_90_in_ms * steps_per_ms) / 90
         self.servo_mid_point_steps = servo_mid_point_ms * steps_per_ms
 
-        self._channels = (0, 2, 4, 6)
+        self._channels = (0, 2)
 
     def stop_all(self): 
         # 0 in start is nothing, 4096 sets the OFF bit. 

@@ -4,6 +4,7 @@ from Raspi_MotorHAT import Raspi_MotorHAT
 from gpiozero import DistanceSensor
 from gpiozero.pins.pigpio import PiGPIOFactory
 import leds_led_shim as leds_led_shim
+from servos import Servos
 
 import atexit
 
@@ -17,6 +18,7 @@ import atexit
 
 
 I2C_ADDR = 0x60
+PWM_ADDR = 0x40
 
 # should i move these?
 MOTOR_CHANNEL_L, MOTOR_CHANNEL_R = 3, 4
@@ -27,7 +29,7 @@ MAX_SPEED = 255
 
 class Robot:
 
-    def __init__(self, motorhat_addr=I2C_ADDR):
+    def __init__(self, motorhat_addr=I2C_ADDR, pwm_addr=PWM_ADDR):
         self._mh = Raspi_MotorHAT(addr=motorhat_addr)
         self.left_motor = self._mh.getMotor(MOTOR_CHANNEL_L)
         self.right_motor = self._mh.getMotor(MOTOR_CHANNEL_R)
@@ -37,12 +39,20 @@ class Robot:
         self.left_distance_sensor = DistanceSensor(echo=LEFT_SENSOR_ECHO, trigger=LEFT_SENSOR_TRIGGER, pin_factory=pin_factory)
         self.right_distance_sensor = DistanceSensor(echo=RIGHT_SENSOR_ECHO, trigger=RIGHT_SENSOR_TRIGGER, pin_factory=pin_factory)
         self.leds = leds_led_shim.Leds()
+        self.servos = Servos(addr=pwm_addr)
         atexit.register(self.stop_all)
 
     def stop_all(self): 
         self.stop_motors() 
         self.leds.clear() 
         self.leds.show()
+        self.servos.stop_all()
+
+    def set_pan(self, angle): 
+        self.servos.set_servo_angle(2, angle) 
+
+    def set_tilt(self, angle): 
+        self.servos.set_servo_angle(0, angle)
 
     def convert_speed(self, speed):
         mode = Raspi_MotorHAT.RELEASE

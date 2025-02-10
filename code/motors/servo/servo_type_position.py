@@ -3,7 +3,7 @@ import atexit
 
 pwm = PWM(0x40)
 
-pwm_frequency = 50 
+pwm_frequency = 50
 pwm.setPWMFreq(pwm_frequency)
 
 servo_mid_point_ms = 1.5
@@ -20,7 +20,8 @@ servo_mid_point_steps = servo_mid_point_ms * steps_per_ms
 def convert_degrees_to_steps(position): 
     return int(servo_mid_point_steps + (position * steps_per_degree))
 
-servo_channels = [0, 2]
+servo_channels = [15]
+# servo_channels = [0, 2]
 
 def turn_off_servos():
     for channel in servo_channels:
