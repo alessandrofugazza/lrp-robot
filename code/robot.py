@@ -5,6 +5,7 @@ from gpiozero import DistanceSensor
 from gpiozero.pins.pigpio import PiGPIOFactory
 import leds_led_shim as leds_led_shim
 from servos import Servos
+from time import sleep
 
 import atexit
 
@@ -49,10 +50,10 @@ class Robot:
         self.servos.stop_all()
 
     def set_pan(self, angle): 
-        self.servos.set_servo_angle(2, angle) 
+        self.servos.set_servo_angle(0, angle) 
 
     def set_tilt(self, angle): 
-        self.servos.set_servo_angle(0, angle)
+        self.servos.set_servo_angle(2, angle)
 
     def convert_speed(self, speed):
         mode = Raspi_MotorHAT.RELEASE
@@ -91,5 +92,26 @@ class Robot:
                 rd = str(rd) + " mm"
             print(f'LEFT {ld}\tRIGHT {rd}')
             time.sleep(frequency)
+
+    def countdown(self):
+        self.leds.clear()
+        self.leds.set_all((255, 0, 0))
+        self.leds.show()
+        sleep(0.5)
+        self.leds.clear()
+        self.leds.show()
+        sleep(0.5)
+        self.leds.set_all((255, 255, 0))
+        self.leds.show()
+        sleep(0.5)
+        self.leds.clear()
+        self.leds.show()
+        sleep(0.5)
+        self.leds.set_all((0, 255, 0))
+        self.leds.show()
+        sleep(0.5)
+        self.leds.clear()
+        self.leds.show()
+        sleep(0.5)
 
     

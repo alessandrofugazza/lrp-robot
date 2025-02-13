@@ -32,4 +32,4 @@ class Servos:
         if angle > 90 or angle < -90: 
             raise ValueError("Angle outside of range")
         off_step = self._convert_degrees_to_steps(angle) 
-        self._pwm.setPWM(self.channels[channel], 0, off_step)
+        self._pwm.setPWM(channel, 0, off_step)
