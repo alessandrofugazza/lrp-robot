@@ -25,6 +25,7 @@ PWM_ADDR = 0x40
 MOTOR_CHANNEL_L, MOTOR_CHANNEL_R = 3, 4
 LEFT_SENSOR_ECHO, LEFT_SENSOR_TRIGGER = 17, 27
 RIGHT_SENSOR_ECHO, RIGHT_SENSOR_TRIGGER = 5, 6
+HEAD_SENSOR_ECHO, HEAD_SENSOR_TRIGGER = 24, 23
 
 MAX_SPEED = 255
 
@@ -39,6 +40,7 @@ class Robot:
         pin_factory = PiGPIOFactory()
         self.left_distance_sensor = DistanceSensor(echo=LEFT_SENSOR_ECHO, trigger=LEFT_SENSOR_TRIGGER, pin_factory=pin_factory)
         self.right_distance_sensor = DistanceSensor(echo=RIGHT_SENSOR_ECHO, trigger=RIGHT_SENSOR_TRIGGER, pin_factory=pin_factory)
+        self.head_distance_sensor = DistanceSensor(echo=HEAD_SENSOR_ECHO, trigger=HEAD_SENSOR_TRIGGER, pin_factory=pin_factory)
         self.leds = leds_led_shim.Leds()
         self.servos = Servos(addr=pwm_addr)
         atexit.register(self.stop_all)
