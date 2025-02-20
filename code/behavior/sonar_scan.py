@@ -6,7 +6,7 @@ from robot import Robot
 start_scan = 0 
 lower_bound = -90 
 upper_bound = 90 
-scan_step = 5
+scan_step = 1
 
 the_robot = Robot() 
 the_robot.set_tilt(0)
